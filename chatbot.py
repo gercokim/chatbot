@@ -20,6 +20,7 @@ class ChatBot():
             self.text = recognizer.recognize_google(audio)
             print("my speech ---> ", self.text) 
         except:
+            self.text = "ERROR"
             print("my speech ---> ERROR")
     
     def text_to_speech(self, text):
@@ -36,11 +37,17 @@ class ChatBot():
     
 # Execution
 if __name__ == "__main__":
-    chatbot = ChatBot("Sam")
+    inp = input("Type in the chatbot name: ")
+    chatbot = ChatBot(inp)
     while True:
         chatbot.speech_to_text()
-        print(chatbot.name, chatbot.start(chatbot.text))
+        print(chatbot.text)
         # Starting up the bot
         if chatbot.start(chatbot.text) is True:
             tts = "Hello, I am " + chatbot.name + " the AI, how can I assist you?"
-            chatbot.text_to_speech(tts)
+        elif "thank" in chatbot.text or "thanks" in chatbot.text:
+            tts = np.random.choice(["No problem!", "You're welcome", "Here to help!"])    
+        else:
+            if chatbot.text == "ERROR":
+                tts = "Sorry, I didn't quite get that"
+        chatbot.text_to_speech(tts)
